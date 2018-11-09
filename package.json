@@ -1,0 +1,23 @@
+{
+  "name": "js-state-machine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -o"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikehans/js-state-machine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikehans/js-state-machine/issues"
+  },
+  "homepage": "https://github.com/mikehans/js-state-machine#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
