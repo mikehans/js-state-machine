@@ -1,4 +1,4 @@
-import * as machine from './machine.js';
+import * as machine from '../lib/machine.js';
 
 var actions = {
     "red": ()=> console.log('Stop light'),
