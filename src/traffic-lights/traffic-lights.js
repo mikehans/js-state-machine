@@ -1,32 +1,29 @@
 import * as machine from '../lib/machine.js';
 
 var actions = {
-    "red": ()=> console.log('Stop light'),
-    "yellow": () => console.log("Yellow light"),
-    "green": ()=> console.log("Green light"),
+    "redlight": ()=> console.log('Stop light'),
+    "yellowlight": () => console.log("Yellow light"),
+    "greenlight": ()=> console.log("Green light"),
     "error": () => console.log("Flashing yellow light"),
     "reset": () => console.log("Resetting state")
 };
 
 var states = {
     "red": {
-        "green": actions.green,
+        "green": actions.greenlight,
         "error": actions.error
     },
     "yellow": {
-        "red": actions.red,
+        "red": actions.redlight,
         "error": actions.error
     },
     "green":{
-        "yellow": actions.yellow,
+        "yellow": actions.yellowlight,
         "error": actions.error
     },
-    "error": {
-      "red": actions.red
-    },
-    "reset": {
-      "red": actions.reset
-    }
+    "default": actions.redlight,
+    "error": actions.error,
+    "reset": actions.reset
 };
 
 function transitionInvalid(){
@@ -34,21 +31,23 @@ function transitionInvalid(){
 }
 
 // Test run...
-machine.init("red", states, actions, transitionInvalid);
+machine.init("red", "green", states, actions, transitionInvalid);
 
 var nextState = machine.getNextValidStates()[0];
-setTimeout(console.log(machine.transition(nextState), 2000));
+console.log(machine.transition(nextState));
 var nextState = machine.getNextValidStates()[0];
-setTimeout(console.log(machine.transition(nextState), 2000));
+console.log(machine.transition(nextState));
 console.log("Attempt to reset");
-setTimeout(console.log(machine.reset()), 2000);
+console.log(machine.reset());
 var nextState = machine.getNextValidStates()[0];
-setTimeout(console.log(machine.transition(nextState), 2000));
+console.log(machine.transition(nextState));
 var nextState = machine.getNextValidStates()[0];
-setTimeout(console.log(machine.transition(nextState), 2000));
-setTimeout(console.log(machine.transition('error'), 2000));
-setTimeout(console.log(machine.transition('red'), 2000));
+console.log(machine.transition(nextState));
+console.log("WILL ERROR");
+console.log(machine.transition('error'));
+console.log("Now back to red");
+console.log(machine.transition('red'));
 console.log("This will be an invalid transition");
-setTimeout(console.log(machine.transition('blah'), 2000));
+console.log(machine.transition('blah'));
 var nextState = machine.getNextValidStates()[0];
-setTimeout(console.log(machine.transition(nextState), 2000));
+console.log(machine.transition(nextState));

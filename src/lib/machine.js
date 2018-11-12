@@ -2,10 +2,12 @@ var _currentState = '';
 var _initialState = 'idle';
 var _actions = {};
 var _states = {};
+var _exitState = '';
 var _errCallback = function(){};
 
-function init(initialState, states, actions, errorCallback){
+function init(initialState, exitState, states, actions, errorCallback){
   _initialState = initialState;
+  _exitState = exitState;
   _actions = actions;
   _states = states;
   _errCallback = errorCallback;
@@ -16,19 +18,24 @@ function reset(){
   _currentState = 'reset';
   _actions.reset();
   _currentState = _initialState;
-  _actions[_currentState]();
+  _states.default();
   return true;
 }
 
 function transition(state){
   if(_currentState !== state){
-    if(_states[_currentState][state]){
-      _states[_currentState][state]();
-      _currentState = state;
+    if(state === "error"){
+      _states.error();
       return true;
     } else {
-      _errCallback();
-      return false;
+      if(_states[_currentState][state]){
+        _states[_currentState][state]();
+        _currentState = state;
+        return true;
+      } else {
+        _errCallback();
+        return false;
+      }
     }
   } else {
     return false;
@@ -43,4 +50,12 @@ function getCurrentState(){
   return _currentState;
 }
 
-export {init, getCurrentState, reset, transition, getNextValidStates};
+function getEntryState(){
+  return _initialState;
+}
+
+function getExitState(){
+  return exitState;
+}
+
+export {init, getEntryState, getExitState, getCurrentState, reset, transition, getNextValidStates};

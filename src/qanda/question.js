@@ -1,33 +1,32 @@
 import * as machine from '../lib/machine.js';
 
 var actions = {
-  "valid": ()=> console.log('question is valid'),
-  "invalid": () => console.log('question is invalid'),
+  "isValid": ()=> console.log('question is valid'),
+  "isInvalid": () => console.log('question is invalid'),
   "reset": () => console.log('resetting')
 };
 
 var states = {
   "valid": {
-    "invalid": actions.invalid
+    "invalid": actions.isInvalid
   },
   "invalid": {
-    "valid": actions.valid
+    "valid": actions.isValid
   },
   "reset": {
     "invalid": actions.reset
-  }
+  },
+  "default": actions.isInvalid
 };
 
-machine.init("invalid", states, actions);
+machine.init("invalid", "valid", states, actions);
 
-console.log(machine.transition('valid'));
-console.log(machine.transition('invalid'));
-console.log(machine.transition('valid'));
-console.log( machine.transition('invalid')); 
-console.log("try to repeat setting to invalid state");
-console.log( machine.transition('invalid'));
-console.log(machine.transition('invalid')); 
-console.log(machine.transition('valid'));
-console.log(machine.reset());
-console.log(machine.transition('valid'));
-console.log( machine.transition('invalid')); 
+function exitPossible(){
+  if (machine.getCurrentState() === machine.getExitState()){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export {machine, actions, states, exitPossible};
