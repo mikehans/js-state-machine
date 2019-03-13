@@ -1,8 +1,17 @@
-//import machine from './machine.js';
+import machine from './machine.js';
 
 let trafficLight = Object.create(machine);
 
 trafficLight.testMe = 6;
+trafficLight.doReset = function () {
+  console.log("ON TEST! - resetting...");
+  trafficLight.setCurrentState('normal');
+};
+
+trafficLight.doError = function () {
+  console.log("Error! Oh noes! flashing yellow light.......");
+  trafficLight.setCurrentState('error');
+};
 
 trafficLight.init({
   id: "lightController",
@@ -12,7 +21,8 @@ trafficLight.init({
       on: {
         ERROR: "error"
       },
-      type: 'compound'
+      type: 'compound',
+      typeid: 'sequencer'
     },
     error: {
       entry: {
@@ -25,22 +35,13 @@ trafficLight.init({
     }
   },
   actions: {
-    reset: ()=> trafficLight.doReset(),
+    reset: () => trafficLight.doReset(),
     error: () => trafficLight.doError()
   }
 });
 
-trafficLight.doReset = function(){
-  console.log("ON TEST! - resetting...");
-  trafficLight.setCurrentState('normal');
-};
+// console.log("trafficLightOperation - showing trafficLight");
+// console.log(trafficLight);
+// console.log("=========================================");
 
-trafficLight.doError = function(){
-  console.log("Error! Oh noes! flashing yellow light.......");
-  trafficLight.setCurrentState('error');
-};
-
-
-
-
-//export default trafficLight;
+export default trafficLight;

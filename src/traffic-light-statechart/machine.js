@@ -1,5 +1,4 @@
 // Models a finite state machine that forms part of a larger statechart
-
 let machine = {
   init: function (config) {
     this.config = config;
@@ -12,11 +11,17 @@ let machine = {
       cs = this.currentState;
 
       var a = this.config.states[this.currentState].on[ev.toUpperCase()];
-      this.config.actions[a]();
+      if(a){
+        this.config.actions[a]();
+        if (this.config.states[this.currentState].type && this.config.states[this.currentState].type === 'compound'){
+          console.log(this.currentState + " is a compound state");
+        }
+      } else {
+        console.log("Invalid transition: " + ev);
+      }
 
       // check for compound state
     } catch (e) {
-      console.log("Invalid transition: " + ev);
       console.log(e);
       console.log('recovering state...');
       this.currentState = cs;
@@ -42,4 +47,8 @@ let machine = {
   */
 };
 
-//export default machine;
+// console.log("machine - showing machine");
+// console.log(machine);
+// console.log("=========================================");
+
+export default machine;

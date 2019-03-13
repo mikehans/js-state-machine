@@ -1,22 +1,47 @@
 import machine from './machine.js';
 
 function changeLight(colour) {
-    setCurrentState(colour);
+    sequencer.setCurrentState(colour);
     console.log("changed light to " + colour);
 }
 
-var additions = {
-    changeGreen: function() {
-        changeLight('green');
+var sequencer = Object.create(machine);
+sequencer.changeGreen = function () {
+    changeLight('green');
+};
+sequencer.changeYellow = function () {
+    changeLight('yellow');
+};
+sequencer.changeRed = function () {
+    changeLight('red');
+};
+
+const sequencerConfig = {
+    id: 'sequencer',
+    initial: "red",
+    states: {
+        red: {
+            on: {
+                TIMER: 'green'
+            }
+        },
+        yellow: {
+            on: {
+                TIMER: 'red'
+            }
+        },
+        green: {
+            on: {
+                TIMER: 'yellow'
+            }
+        }
     },
-    changeYellow: function() {
-        changeLight('yellow');
-    },
-    changeRed: function() {
-        changeLight('red');
+    actions: {
+        green: () => sequencer.changeGreen(),
+        yellow: () => sequencer.changeYellow(),
+        red: () => sequencer.changeRed()
     }
 };
 
-var trafficLightSequence = Object.create(machine, additions);
-
-export default trafficLightSequence;
+sequencer.init(sequencerConfig);
+export default sequencer;
