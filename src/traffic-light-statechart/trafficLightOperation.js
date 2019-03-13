@@ -1,6 +1,10 @@
-import {init, transition, listNext, setCurrentState, getCurrentState, compoundStates, createCompoundState} from './machine.js';
+//import machine from './machine.js';
 
-let config = {
+let trafficLight = Object.create(machine);
+
+trafficLight.testMe = 6;
+
+trafficLight.init({
   id: "lightController",
   initial: "error",
   states: {
@@ -15,25 +19,28 @@ let config = {
       },
       exit: {
       },
-      on : {
+      on: {
         RESET: "reset"
       }
     }
   },
   actions: {
-    reset: doReset,
-    error: doError
+    reset: ()=> trafficLight.doReset(),
+    error: () => trafficLight.doError()
   }
+});
+
+trafficLight.doReset = function(){
+  console.log("ON TEST! - resetting...");
+  trafficLight.setCurrentState('normal');
 };
 
-function doReset(){
-  console.log("Resetting me");
-  setCurrentState('normal');
-}
+trafficLight.doError = function(){
+  console.log("Error! Oh noes! flashing yellow light.......");
+  trafficLight.setCurrentState('error');
+};
 
-function doError(){
-  console.log("Error! Oh noes!");
-  setCurrentState('error');
-}
 
-export {config, transition, init, listNext, getCurrentState, createCompoundState, compoundStates, createCompoundState};
+
+
+//export default trafficLight;
