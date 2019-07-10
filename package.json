@@ -19,5 +19,8 @@
   "homepage": "https://github.com/mikehans/js-state-machine#readme",
   "devDependencies": {
     "http-server": "^0.11.1"
+  },
+  "dependencies": {
+    "redux": "^4.0.3"
   }
 }
